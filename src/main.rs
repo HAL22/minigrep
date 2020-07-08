@@ -1,33 +1,32 @@
 use std::env;
 use std::fs;
+use minigrep::Config;
+use minigrep::run;
+
 
 fn main() {
 
     let args: Vec<String> = env::args().collect();
 
-    let query = args.get(1);
+    let config = Config::new(&args);
 
-    let filename = args.get(2);
+    let config = match config {
 
-    let query = match query{
-
-       None => panic!("The query cannot be null"),
-       Some(query) => query
-
+        Ok(con) => con,
+        Err(err) => {
+            panic!(err)
+        }
     };
 
-    let filename = match filename{
+    let result = run(config);
 
-        None => panic!("The file ename cannot be null"),
-        Some(filename) => filename
-
-    };
-
-    let contents = fs::read_to_string(filename)
-        .expect("Something went wrong reading the file");
+    
 
 
 
-    println!("Query: {}, and filename: {}",query,filename);
+
+
+
+
     
 }

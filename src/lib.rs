@@ -1,13 +1,14 @@
 use std::fs;
+use std::io;
 
 pub struct Config {
     pub query:String,
     pub filename:String
-};
+}
 
 impl Config{
 
-    fn new(args: &[String]) -> Result<Config,& 'static' str>{
+    pub fn new(args: &[String]) -> Result<Config,& 'static str>{
 
         if args.len() < 3{
 
@@ -15,9 +16,9 @@ impl Config{
         }
         else{
 
-            let query = args[1];
+            let query = args[1].clone();
 
-            let filename = args[2];
+            let filename = args[2].clone();
 
             return Ok(Config{
                 query,
@@ -31,14 +32,19 @@ impl Config{
 
 }
 
-fn run(config: Config){
+pub fn run(config: Config) -> Result<String,io::Error>{
 
     let contents = fs::read_to_string(config.filename);
 
     let contents = match contents{
 
-        Err()
-    }
-    
+        Err(x) => return Err(x),
+
+        Ok(contents) => contents
+      
+    };
+
+
+    return Ok(contents);
 
 }
